@@ -1,5 +1,7 @@
 {
   "type": "module",
+  "name": "minha-api",
+  "version": "1.0.0",
   "scripts": {
     "dev": "node --watch server.js"
   },
