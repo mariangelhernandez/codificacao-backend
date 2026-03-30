@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivinhe a Palavra Pro</title>
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a2e; /* Fundo escuro para maior contraste */
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            color: var(--dark);
+        }
+
+.container {
+            background: white;
+            border-radius: 24px;
+padding: 55px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+max-width: 550px;
+            width: 100%;
+            border: 4px solid var(--secondary);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 2.2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        /* Dashboard de Informações */
+        .game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-card {
+            background: #f8faff;
+            padding: 12px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #edf2f7;
+        }
+
+        .info-label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        .info-value {
+            font-size: 1.6em;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Área da Dica */
+        .hint-box {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--warning);
+        }
+
+        .hint-text {
+            color: #926e08;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        /* Display da Palavra */
+        .word-display {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .letter-box {
+            width: 45px;
+            height: 55px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            background: #f1f5f9;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .letter-box.revealed {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(78, 84, 200, 0.3);
+        }
+
+        /* Letras Usadas */
+        .used-letters-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .used-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .used-char {
+            font-weight: bold;
+            padding: 4px 10px;
+            background: #eee;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .char-wrong { color: var(--danger); text-decoration: line-through; }
+        .char-right { color: var(--success); }
+
+        /* Inputs e Botões */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-wrap {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1.2em;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-try {
+            background: var(--primary);
+            color: white;
+            padding: 0 25px;
+        }
+
+        .btn-new {
+            background: var(--success);
+            color: white;
+            padding: 15px;
+            width: 100%;
+        }
+
+        button:hover { opacity: 0.9; transform: scale(1.02); }
+        button:active { transform: scale(0.98); }
+
+        /* Mensagens de Feedback */
+        .msg {
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .msg-err { background: #fee2e2; color: #991b1b; display: block; animation: shake 0.4s; }
+        .msg-ok { background: #dcfce7; color: #166534; display: block; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 480px) {
+            .letter-box { width: 35px; height: 45px; font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>PALAVRA 🎯</h1>
+        <p class="subtitle">Desafio de Conhecimentos</p>
+
+        <div class="game-info">
+            <div class="info-card">
+                <div class="info-label">Vidas ❤️</div>
+                <div class="info-value" id="attempts">6</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Score ⭐</div>
+                <div class="info-value" id="score">0</div>
+            </div>
+        </div>
+
+        <div class="hint-box">
+            <span style="font-weight: bold; color: #856404;">DICA:</span>
+            <span class="hint-text" id="hint">---</span>
+        </div>
+
+        <div class="word-display" id="wordDisplay"></div>
+
+        <div id="message" class="msg"></div>
+
+        <div class="used-letters-section">
+            <div class="info-label">Histórico de Letras:</div>
+            <div class="used-list" id="usedLetters"></div>
+        </div>
+
+        <div class="controls">
+            <div class="input-wrap">
+                <input type="text" id="letterInput" maxlength="1" placeholder="?" autocomplete="off">
+                <button class="btn-try" onclick="guessLetter()">Tentar</button>
+            </div>
+            <button class="btn-new" onclick="newGame()">Próxima Palavra ↻</button>
+        </div>
+    </div>
+<script>
+    // 1. Banco de dados: Lista de objetos com as palavras secretas e suas respectivas dicas.
+    const words = [
+        { word: 'BACKEND', hint: 'A lógica por trás das cortinas e o servidor' },
+        { word: 'FRONTEND', hint: 'A parte do site que o usuário vê e interage' },
+        { word: 'INJEÇÃO DE DEPENDENCIA', hint: 'Padrão onde uma classe recebe suas dependências externas' },
+        { word: 'SPAGHETTI CODE', hint: 'Código confuso, emaranhado e difícil de manter' },
+        { word: 'FAT CONTROLLER', hint: 'Antipadrão: lógica de negócio acumulada no controlador' },
+        { word: 'MOCKS', hint: 'Objetos que simulam o comportamento de objetos reais em testes' },
+        { word: 'ARQUITETURA DE SISTEMAS', hint: 'A estrutura de alto nível de um software' },
+        { word: 'API', hint: 'Interface que permite que dois sistemas se comuniquem' },
+        { word: 'MIDDLEWARES', hint: 'Funções que interceptam a requisição antes do destino' },
+        { word: 'VARIAVEIS DE AMBIENTE', hint: 'Configurações sensíveis guardadas fora do código' },
+        { word: 'MODELO CLIENTE SERVIDOR', hint: 'Estrutura onde um pede recursos e o outro fornece' },
+        { word: 'SERVICES', hint: 'Camada responsável pela regra de negócio' },
+        { word: 'WEBHOOKS', hint: 'Notificações automáticas enviadas via HTTP' },
+        { word: 'MVC', hint: 'Padrão: Model, View e Controller' },
+        { word: 'NODEJS', hint: 'Ambiente de execução Javascript no servidor' },
+        { word: 'RESPONSABILIDADE UNICA', hint: 'Princípio: uma classe deve ter apenas uma função' },
+        { word: 'TOKEN JWT', hint: 'Padrão de mercado para autenticação segura' },
+        { word: 'SUBSCRIBERS', hint: 'Componentes que "ouvem" eventos ou mensagens' },
+        { word: 'ESCALABILIDADE', hint: 'Capacidade do sistema de lidar com aumento de carga' }
+    ];
+
+    // Variáveis de controle de estado (o "cérebro" que armazena o progresso do jogo)
+    let currentWord = '';           // Armazena a palavra da rodada atual
+    let currentHint = '';           // Armazena a dica da rodada atual
+    let guessedLetters = [];        // Array com o que já foi descoberto (ex: ['A', '_', 'B'])
+    let usedLettersHistory = [];    // Lista de todas as letras que o usuário já tentou
+    let attemptsLeft = 6;           // Contador de vidas/tentativas restantes
+    let score = 0;                  // Pontuação acumulada do jogador
+
+    // Função para configurar um novo jogo (Limpa tudo e escolhe nova palavra)
+    function newGame() {
+        const randomIndex = Math.floor(Math.random() * words.length); // Escolhe um índice aleatório
+        currentWord = words[randomIndex].word.toUpperCase();          // Define a palavra em maiúsculas
+        currentHint = words[randomIndex].hint;                        // Define a dica correspondente
+        
+        // Mapeia a palavra: se for espaço ou hífen, mostra; se for letra, coloca '_'
+        guessedLetters = currentWord.split('').map(char => 
+            (char === ' ' || char === '-') ? char : '_'
+        );
+
+        usedLettersHistory = []; // Reseta o histórico de letras para a nova rodada
+        attemptsLeft = 6;        // Reseta as vidas
+
+        // Atualiza os elementos do HTML com os novos dados
+        document.getElementById('hint').textContent = currentHint;
+        document.getElementById('attempts').textContent = attemptsLeft;
+        document.getElementById('letterInput').value = '';
+        document.getElementById('letterInput').disabled = false;
+        hideMessage();           // Esconde avisos de vitórias/derrotas anteriores
+        updateDisplay();         // Desenha o tabuleiro na tela
+    }
+
+    // Função que redesenha a interface visual sempre que algo muda no jogo
+    function updateDisplay() {
+        const wordDisplay = document.getElementById('wordDisplay');
+        wordDisplay.innerHTML = ''; // Limpa o visor para desenhar do zero
+
+        // Cria os quadradinhos para cada letra da palavra
+        guessedLetters.forEach((letter) => {
+            const box = document.createElement('div');
+            if (letter === ' ') { // Se for espaço, cria um bloco invisível
+                box.style.border = 'none';
+                box.style.background = 'transparent';
+                box.style.width = '20px';
+            } else { // Se for letra, cria a caixa estilizada
+                box.className = 'letter-box' + (letter !== '_' ? ' revealed' : '');
+                box.textContent = letter === '_' ? '' : letter;
+            }
+            wordDisplay.appendChild(box);
+        });
+
+        // Atualiza a lista visual de letras que já foram chutadas (certa/errada)
+        const usedDiv = document.getElementById('usedLetters');
+        usedDiv.innerHTML = '';
+        usedLettersHistory.forEach(item => {
+            const span = document.createElement('span');
+            span.className = `used-char ${item.correct ? 'char-right' : 'char-wrong'}`;
+            span.textContent = item.char;
+            usedDiv.appendChild(span);
+        });
+    }
+
+    // Função principal: Processa a letra que o usuário digitou
+    function guessLetter() {
+        const input = document.getElementById('letterInput');
+        const letter = input.value.toUpperCase().trim(); // Normaliza a entrada
+
+        // Validação: impede o envio de campos vazios ou caracteres que não sejam letras
+        if (!letter || !letter.match(/[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ]/)) {
+            showMessage('Digite uma letra!', 'err');
+            return;
+        }
+
+        // Validação: impede que o usuário gaste tentativas com letras repetidas
+        if (usedLettersHistory.some(item => item.char === letter)) {
+            showMessage('Já usou essa!', 'err');
+            input.value = '';
+            return;
+        }
+
+        const isCorrect = currentWord.includes(letter); // Checa se a letra existe na palavra
+        usedLettersHistory.push({ char: letter, correct: isCorrect }); // Salva no histórico
+        input.value = ''; // Limpa o campo de texto para o próximo chute
+
+        if (isCorrect) {
+            // Se acertou: percorre a palavra e revela a letra em todas as posições
+            for (let i = 0; i < currentWord.length; i++) {
+                if (currentWord[i] === letter) guessedLetters[i] = letter;
+            }
+            showMessage('Boa!', 'ok');
+
+            // Verifica se o jogador ganhou (não há mais nenhum '_' escondido)
+            if (!guessedLetters.includes('_')) {
+                score += (attemptsLeft * 20); // Bônus de pontos por vidas restantes
+                document.getElementById('score').textContent = score;
+                showMessage('🏆 VOCÊ VENCEU!', 'ok');
+                document.getElementById('letterInput').disabled = true; // Trava o jogo
+            }
+        } else {
+            // Se errou: diminui uma vida
+            attemptsLeft--;
+            document.getElementById('attempts').textContent = attemptsLeft;
+            showMessage('Errou...', 'err');
+
+            // Verifica se o jogador perdeu todas as vidas
+            if (attemptsLeft <= 0) {
+                guessedLetters = currentWord.split(''); // Revela a palavra completa
+                showMessage(`FIM DE JOGO! Era: ${currentWord}`, 'err');
+                document.getElementById('letterInput').disabled = true; // Trava o jogo
+            }
+        }
+        updateDisplay(); // Atualiza a tela após a jogada
+    }
+
+    // Função de utilidade: Mostra alertas visuais coloridos para o usuário
+    function showMessage(text, type) {
+        const msgEl = document.getElementById('message');
+        msgEl.textContent = text;
+        msgEl.style.display = 'block';
+        msgEl.className = `msg msg-${type}`; // Aplica classe de sucesso ou erro
+    }
+
+    // Função de utilidade: Esconde a caixa de mensagens
+    function hideMessage() {
+        document.getElementById('message').style.display = 'none';
+    }
+
+    // Event Listener: Permite jogar apenas apertando a tecla "Enter" no teclado
+    document.getElementById('letterInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') guessLetter();
+    });
+
+    // Início automático: Começa o primeiro jogo assim que a página carrega
+    newGame();
+</script>
