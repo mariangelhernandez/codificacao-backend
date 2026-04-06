@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "Clínica Dental Sorriso",
+    "address": "Rua das Flores, 123, São Paulo - SP",
+    "phone": "(11) 99999-0001"
+  },
+  {
+    "id": 2,
+    "name": "Hospital ABC",
+    "address": "Av. Paulista, 456, São Paulo - SP",
+    "phone": "(11) 99999-0002"
+  },
+  {
+    "id": 3,
+    "name": "Clínica OftalmoVisão",
+    "address": "Rua Augusta, 789, Rio de Janeiro - RJ",
+    "phone": "(21) 99999-0003"
+  },
+  {
+    "id": 4,
+    "name": "Centro Médico Vida Saudável",
+    "address": "Praça da Liberdade, 101, Belo Horizonte - MG",
+    "phone": "(31) 99999-0004"
+  },
+  {
+    "id": 5,
+    "name": "Clínica CardioCare",
+    "address": "Av. Beira Mar, 202, Fortaleza - CE",
+    "phone": "(85) 99999-0005"
+  },
+  {
+    "id": 6,
+    "name": "Laboratório São Lucas",
+    "address": "Rua Central, 303, Curitiba - PR",
+    "phone": "(41) 99999-0006"
+  }
+]
+
