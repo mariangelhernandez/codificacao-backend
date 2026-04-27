@@ -1,14 +1,20 @@
 [
   {
     "id": 1,
-    "nome": "Maçã Gala"
+    "nome": "Maçã",
+    "cor": "Vermelha",
+    "preco": 4.5
   },
   {
-    "id": 2,
-    "nome": "Banana"
+    "id": 3,
+    "nome": "Uva Thompson",
+    "cor": "Verde",
+    "preco": 9
   },
   {
     "id": 4,
-    "nome": "Abacaxi"
+    "nome": "Abacaxi",
+    "cor": "Amarelo",
+    "preco": 7.5
   }
 ]
