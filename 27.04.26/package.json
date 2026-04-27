@@ -1,0 +1,11 @@
+{
+  "name": "atividade-fs-json",
+  "version": "1.0.0",
+  "description": "Atividade pratica com fs e JSON",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+
