@@ -28,8 +28,7 @@ Dar oportunidade aos universitários de colocarem seus conhecimentos em prática
 
 
 ### Tecnologias Sugeridas
-- Backend: Node.js + Express
-- Banco de dados: PostgreSQL ou MongoDB
+- Backend: Node.js 
 - Frontend: React 
 -   (frontend) + (backend)
 
