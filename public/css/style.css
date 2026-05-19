@@ -1,0 +1,236 @@
+/* PALETA DE CORES BASEADA NA SUA LOGO */
+:root {
+    --primary-teal: #004c63;    /* Azul escuro da logo */
+    --secondary-green: #27b38d; /* Verde vibrante da logo */
+    --light-green: #a1d389;    /* Verde folha claro */
+    --white: #ffffff;
+    --light-bg: #f4f9f8;
+    --text-dark: #1a2b2a;
+    --transition: all 0.3s ease;
+}
+
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* NAVBAR PROFISSIONAL */
+.navbar {
+    background: var(--white);
+    padding: 10px 0;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-img {
+    height: 60px; /* Ajuste conforme o tamanho da sua logo */
+    display: block;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--primary-teal);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.nav-menu a:hover {
+    color: var(--secondary-green);
+}
+
+/* BOTÃO DE AGENDAMENTO NO MENU */
+.btn-nav-agendar {
+    background: var(--secondary-green);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(39, 179, 141, 0.3);
+}
+
+.btn-nav-agendar:hover {
+    background: var(--primary-teal);
+    transform: translateY(-2px);
+}
+
+/* HERO SECTION (BANNER PRINCIPAL) */
+.hero {
+    height: 70vh;
+    min-height: 400px;
+    /* Gradiente que garante visibilidade mesmo sem foto no fundo */
+    background: linear-gradient(135deg, rgba(0, 76, 99, 0.9), rgba(39, 179, 141, 0.8)), 
+                url('../img/banner.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+/* SEÇÃO DE FORMULÁRIO (BACKEND) */
+.booking-section {
+    padding: 80px 0;
+    background-color: var(--light-bg);
+}
+
+.form-container {
+    background: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border-top: 5px solid var(--secondary-green);
+}
+
+.form-container h2 {
+    color: var(--primary-teal);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input, select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: var(--secondary-green);
+}
+
+.btn-submit {
+    background: var(--primary-teal);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-submit:hover {
+    background: var(--secondary-green);
+}
+
+/* MENSAGENS DE RETORNO */
+#feedback {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.success { color: #27b38d; }
+.error { color: #e74c3c; }
+
+
+/** PAGINA SOBRE */
+
+
+/* Espaçamento para o conteúdo abaixo do menu fixo */
+.hero-sub {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/hero-bg.jpg'); /* use a mesma imagem de fundo do index */
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding-top: 80px; /* altura da navbar */
+}
+
+.content-section {
+    padding: 60px 20px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-text h2 {
+    color: #2c3e50;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.about-text p {
+    line-height: 1.6;
+    color: #555;
+}
+
+.about-text ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-text ul li {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.about-text ul i {
+    color: #27ae60; /* Cor verde para os ícones de check */
+    margin-right: 10px;
+}
+
+/* Responsividade para celulares */
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
