@@ -1,32 +1,84 @@
 <!DOCTYPE html>
-<html lang="pt-Br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte ao Cliente</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-slate-50 p-4">
 
-
-<body class="bg-gray-100 h-screen flex flex-col items-center justify-center p-4">
-
-
-  <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-[500px]">
-    <div class="bg-red-500 text-white p-4">
-      <h1 class="text-lg font-bold">Chat de Entrega - Pedido #101</h1>
-      <p id="order-status" class="text-sm opacity-90">Status: Carregando...</p>
+    <!-- //começo do chat// -->
+    <div class="mb-4 flex gap-2">
+        <button id="btn-customer" onclick="setRole('customer')" class="bg-blue-600 text-white px-4 py-2 rounded">Cliente (Ana)</button>
+        <button id="btn-agent" onclick="setRole('agent')" class="bg-slate-200 px-4 py-2 rounded">Atendente (Carlos)</button>
     </div>
 
+    <div class="max-w-md mx-auto bg-white shadow rounded-lg overflow-hidden">
+        <!-- Cabeçalho -->
+        <header class="bg-slate-800 text-white p-4">
+            <p id="chat-participants" class="font-bold"></p>
+            <span class="text-xs bg-green-500 px-2 py-0.5 rounded">ATIVO</span>
+        </header>
 
-    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50">
-      </div>
+        <div id="chat-container" class="h-80 overflow-y-auto p-4 space-y-2"></div>
 
-
-    <div class="p-3 bg-white border-t flex gap-2">
-      <input id="msg-input" type="text" placeholder="Digite uma mensagem como 'customer'..." class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
-      <button id="send-btn" class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600">Enviar</button>
+        <div class="p-4 border-t flex">
+            <input id="message-input" type="text" class="flex-1 border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Digite sua mensagem...">
+            <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 ml-2 rounded">Enviar</button>
+        </div>
     </div>
-  </div>
-</body>  
+    
+    <script>let currentRole = 'customer';
+        
+        // Simulação de Banco de Dados na memória
+        let mockData = {
+            orderId: 'order-101',
+            status: 'Em andamento',
+            customer: { id: 'user_client_1', name: 'Ana' },
+            agent: { id: 'user_agent_1', name: 'Carlos' },
+            messages: [
+                { sender: 'customer', text: 'Olá, meu pedido não chegou.', timestamp: '10:00' },
+                { sender: 'agent', text: 'Olá Ana, sou o Carlos, vou verificar agora.', timestamp: '10:01' }
+            ]
+        };
 
+        function setRole(role) {
+            currentRole = role;
+            document.getElementById('btn-customer').className = role === 'customer' ? 'bg-blue-600 text-white px-4 py-2 rounded' : 'bg-slate-200 px-4 py-2 rounded';
+            document.getElementById('btn-agent').className = role === 'agent' ? 'bg-blue-600 text-white px-4 py-2 rounded' : 'bg-slate-200 px-4 py-2 rounded';
+            document.getElementById('message-input').placeholder = role === 'customer' ? 'Mensagem para atendente...' : 'Resposta para cliente...';
+        }
 
+        function renderChat() {
+            const container = document.getElementById('chat-container');
+            document.getElementById('chat-participants').innerText = `${mockData.customer.name} & ${mockData.agent.name}`;
+            container.innerHTML = mockData.messages.map(m => `
+                <div class="${m.sender === 'customer' ? 'text-right' : 'text-left'}">
+                    <span class="inline-block p-2 rounded ${m.sender === 'customer' ? 'bg-blue-100' : 'bg-slate-100'}">${m.text}</span>
+                </div>
+            `).join('');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            if (input.value.trim() === '') return;
+            
+            mockData.messages.push({
+                sender: currentRole,
+                text: input.value,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            
+            input.value = '';
+            renderChat();
+            const container = document.getElementById('chat-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+    
+        setRole('customer');
+        renderChat();</script>
+       
+</body>
 </html>
